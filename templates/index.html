@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Imaster</title>
+
+  <link rel="stylesheet"
+        href="https://unpkg.com/bootstrap/dist/css/bootstrap.css">
+  
+  <script src="https://unpkg.com/jquery"></script>
+  <script src="https://unpkg.com/popper"></script>
+  <script src="https://unpkg.com/bootstrap"></script>
+
+  <link rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+  <link rel="stylesheet" href="/templates/static/style.css">
+  <link rel="shortcut icon" href="/static/favicon.ico">
+  <link rel="shortcut icon" href="users/static/signup.css">
+  {% block header %}
+  
+  {% endblock %}
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+<nav class="navbar navbar-expand">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a href="/" class="navbar-brand">
+        <img src="https://i.ibb.co/vZsbZfZ/logo.png" alt="logo">
+        <span>Imaster</span>
+      </a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      {% if request.endpoint != None %}
+      <li>
+        <form class="navbar-form navbar-right" action="/users">
+          <input name="q" class="form-control" placeholder="Search" id="search">
+          <button class="btn btn-default">
+            <span class="fa fa-search"></span>
+          </button>
+        </form>
+      </li>
+      {% endif %}
+      {% if not g.user %}
+      <li><a href="/signup">Sign up</a></li>
+      <li><a href="/login">Log in</a></li>
+      {% else %}
+      <li>
+        <a href="/users/{{ g.user.id }}">
+          <img src="{{ g.user.image_url }}" alt="{{ g.user.username }}">
+        </a>
+      </li>
+      <li><a href="/messages/new">New Message</a></li>
+      <li><a href="/logout">Log out</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  {% for category, message in get_flashed_messages(with_categories=True) %}
+  <div class="alert alert-{{ category }}">{{ message }}</div>
+  {% endfor %}
+
+  {% block content %}
+  {% endblock %}
+
+</div>
+</body>
+</html>
+
+
+
+
+<style>
+    .navbar {
+        background-color: #fff;
+        height: 46px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 9999;
+      }
+      
+      .navbar a {
+        color: #66757f;
+        font-size: 13px;
+        font-weight: bold;
+      }
+      
+      .navbar a:hover {
+        color: #1c94e0;
+      }
+      
+      .navbar-brand {
+        display: flex;
+        align-items: center;
+      }
+      
+      .navbar-brand > img {
+        display: inline-block;
+        margin-bottom: 2px;
+        margin-right: 5px;
+        width: 20px;
+        border-radius: 2px;
+      }
+      
+      .nav > li > a > img {
+        width: 32px;
+        border-radius: 32px;
+      }
+      
+      ul.nav.navbar-nav {
+        align-items: center;
+      }
+      
+      ul.nav.navbar-nav li {
+        margin: 0 0.5rem;
+        display: flex;
+      }
+      
+      nav form.navbar-form {
+        display: flex;
+        position: relative;
+      }
+      
+      #search.form-control {
+        border-radius: 20px;
+        margin-bottom: 0;
+        width: 100%;
+        font-size: 13px;
+        padding-right: 28px;
+        box-sizing: border-box;
+      }
+      
+      #search.form-control + .btn {
+        position: absolute;
+        right: 9px;
+        top: 2px;
+        bottom: 4px;
+        z-index: 1;
+        padding: 0;
+        color: #66757f;
+      }
+      
+      #search.form-control + .btn:active,
+      #search.form-control + .btn:focus {
+        box-shadow: none;
+      }
+      
+      #search:active,
+      #search:focus {
+        box-shadow: none;
+        border: 2px solid #007bff;
+      }
+      
+      /* on "onboarding" pages (signup & login), the navbar is
+         different: no search box, the logo is centered, and it has
+         a background color.
+       */
+      
+      .onboarding > .navbar {
+        background-image: url("/static/images/nav-bg.png");
+        background-size: 100% 100%;
+      }
+      
+      .onboarding .navbar-header {
+        margin: 0 auto;
+      }
+      
+      .onboarding .navbar-brand {
+        margin: 0;
+      }
+      
+      .onboarding .navbar-brand span {
+        display: none;
+      }
+      
+      .onboarding .nav.navbar-nav.navbar-right {
+        position: absolute;
+        right: 16px;
+      }
+      
+      .onboarding > .navbar a {
+        color: #fff;
+      }
+      
+      .onboarding > .navbar form.navbar-form {
+        display: none;
+      }
+      
+      .onboarding {
+        background-color: #fff;
+      }
+      
+      @media (max-width: 468px) {
+        nav form.navbar-form {
+          display: none;
+        }
+      }
+      
+      nav + .container {
+        margin-bottom: 1rem;
+      }
+</style>
