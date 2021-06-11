@@ -124,9 +124,7 @@ def logout():
 
 @app.route('/', methods=['GET'])
 def home():
-    data = response.json()
-
-    return render_template('users/home.html', data=data)
+    return render_template('users/home.html')
 
 
 
